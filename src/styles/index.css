@@ -1,0 +1,262 @@
+@import 'leaflet/dist/leaflet.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+.dark {
+  --bg: 8 13 22;
+  --side: 13 20 32;
+  --surface: 17 27 41;
+  --card: 22 34 53;
+  --line: 38 54 74;
+  --ink: 242 246 252;
+  --mute: 154 170 189;
+  --cyan: 53 213 242;
+  --red: 255 77 90;
+  --amber: 255 191 74;
+  --green: 54 211 153;
+  --blue: 92 157 255;
+  color-scheme: dark;
+}
+
+.light {
+  --bg: 240 243 248;
+  --side: 255 255 255;
+  --surface: 255 255 255;
+  --card: 246 248 251;
+  --line: 214 222 232;
+  --ink: 14 22 36;
+  --mute: 84 99 120;
+  --cyan: 0 140 170;
+  --red: 214 40 57;
+  --amber: 176 112 0;
+  --green: 16 140 96;
+  --blue: 40 100 210;
+  color-scheme: light;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01', 'tnum';
+  }
+  *:focus-visible {
+    outline: 2px solid rgb(var(--cyan));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: rgb(var(--cyan) / 0.3);
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-surface border border-line rounded-lg;
+  }
+  .panel-head {
+    @apply flex items-center justify-between gap-2 px-4 py-3 border-b border-line;
+  }
+  .panel-title {
+    @apply text-[13px] font-semibold tracking-wide text-ink flex items-center gap-2;
+  }
+  .label {
+    @apply text-[11px] uppercase tracking-[0.08em] text-mute font-medium;
+  }
+  .mono {
+    @apply font-mono;
+  }
+  .input {
+    @apply w-full h-9 rounded-md bg-bg/60 border border-line px-3 text-sm text-ink placeholder:text-mute/70 focus:border-cyan focus:outline-none transition-colors;
+  }
+  .table-base {
+    @apply w-full text-left text-[13px];
+  }
+  .table-base th {
+    @apply label px-3 py-2.5 font-medium border-b border-line whitespace-nowrap bg-surface sticky top-0 z-[1];
+  }
+  .table-base td {
+    @apply px-3 py-2.5 border-b border-line/60 align-middle;
+  }
+  .density-compact .table-base td {
+    @apply py-1.5;
+  }
+  .table-base tbody tr {
+    @apply transition-colors;
+  }
+  .table-base tbody tr.clickable {
+    @apply cursor-pointer hover:bg-card;
+  }
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--line)) transparent;
+  }
+}
+
+/* Scrollbars */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgb(var(--line));
+  border-radius: 8px;
+}
+
+/* Leaflet theming */
+.leaflet-container {
+  background: rgb(var(--bg));
+  font-family: Inter, system-ui, sans-serif;
+}
+.leaflet-control-attribution {
+  background: rgb(var(--surface) / 0.85) !important;
+  color: rgb(var(--mute)) !important;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a {
+  color: rgb(var(--cyan)) !important;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: rgb(var(--card));
+  color: rgb(var(--ink));
+  border: 1px solid rgb(var(--line));
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  border-radius: 8px;
+}
+.leaflet-popup-content {
+  margin: 12px 14px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  color: rgb(var(--mute));
+}
+.leaflet-bar a {
+  background: rgb(var(--surface));
+  color: rgb(var(--ink));
+  border-bottom-color: rgb(var(--line));
+}
+.leaflet-bar a:hover {
+  background: rgb(var(--card));
+}
+.leaflet-bar {
+  border: 1px solid rgb(var(--line)) !important;
+}
+.map-fallback-grid {
+  background-image: linear-gradient(rgb(var(--line) / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.35) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Marker shapes (divIcons) */
+.epre-marker {
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s ease;
+}
+.epre-marker:hover {
+  transform: scale(1.12);
+}
+.mk-incident {
+  width: 22px;
+  height: 22px;
+  transform: rotate(45deg);
+  border: 2px solid rgb(var(--bg));
+  border-radius: 3px;
+}
+.mk-incident span {
+  transform: rotate(-45deg);
+  font: 700 10px/1 Inter, sans-serif;
+  color: #080d16;
+}
+.mk-ambulance {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 2px solid rgb(var(--bg));
+}
+.mk-hospital {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgb(var(--bg));
+}
+.mk-selected {
+  box-shadow: 0 0 0 3px rgb(var(--cyan)), 0 0 18px 4px rgb(var(--cyan) / 0.55);
+}
+.mk-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgb(var(--red) / 0.7);
+  animation: pulse 1.8s ease-out infinite;
+}
+.mk-signal {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 2px solid rgb(var(--bg));
+}
+@keyframes pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+@keyframes live-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.live-dot {
+  animation: live-dot 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print-friendly report */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-area {
+    position: static !important;
+    overflow: visible !important;
+  }
+  .panel {
+    border-color: #ccc !important;
+    background: #fff !important;
+    break-inside: avoid;
+  }
+}
+.map-fallback-grid .leaflet-container {
+  background: transparent;
+}
